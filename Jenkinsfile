@@ -1,33 +1,9 @@
 pipeline {
     agent { label 'build_java_11' }
-    triggers {
-        cron('0 * * * *')
-    }
     stages {
-        stage('SourceCode') {
+        stage ('Clone') {
             steps {
-                git branch: 'declarative', url: 'https://github.com/spring-projects/spring-petclinic.git'
-            }
-        }
-        stage('Artifactory-Configuration') {
-            steps {
-                rtMavenDeployer (
-                    id: 'spc-deployer',
-                    serverId: 'https://akmdevops.jfrog.io/',
-                    releaseRepo: 'spc-libs-release-local',
-                    snapshotRepo: 'spc-libs-snapshot-local',
-
-                )
-            }
-        }
-        stage ('Exec Maven') {
-            steps {
-                rtMavenRun (
-                    tool: 'M2_HOME', 
-                    pom: 'pom.xml',
-                    goals: 'clean install',
-                    deployerId: "MAVEN_DEPLOYER",
-                )
+                git branch: 'declarative', url: "https://github.com/arvindmahat/spring-petclinic.git"
             }
         }
         stage('Build & SonarQube analysis') {
@@ -35,6 +11,35 @@ pipeline {
               withSonarQubeEnv('sonar') {
                 sh 'mvn clean package sonar:sonar'
               }
+            }
+        }
+        
+        stage('Artifactory-Configuration') {
+            steps {
+                rtMavenDeployer (
+                    id: 'spc-deployer',
+                    serverId: 'Jfrog_Instance',
+                    releaseRepo: 'spc-libs-release-local',
+                    snapshotRepo: 'spc-libs-snapshot-local',
+
+                )
+            }
+        }
+        stage('Build the Code and sonarqube-analysis') {
+            steps {
+                rtMavenRun (
+                    tool: 'M2_HOME',
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: 'spc-deployer',
+                )
+            }
+        }
+        stage ('Publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "Jfrog_Instance"
+                )
             }
         }
         stage('archiveArtifacts and test results') {
