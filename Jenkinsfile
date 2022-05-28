@@ -9,6 +9,27 @@ pipeline {
                 git branch: 'declarative', url: 'https://github.com/spring-projects/spring-petclinic.git'
             }
         }
+        stage('Artifactory-Configuration') {
+            steps {
+                rtMavenDeployer (
+                    id: 'spc-deployer',
+                    serverId: 'https://akmdevops.jfrog.io/',
+                    releaseRepo: 'spc-libs-release-local',
+                    snapshotRepo: 'spc-libs-snapshot-local',
+
+                )
+            }
+        }
+        stage ('Exec Maven') {
+            steps {
+                rtMavenRun (
+                    tool: 'M2_HOME', 
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER",
+                )
+            }
+        }
         stage('Build & SonarQube analysis') {
             steps {
               withSonarQubeEnv('sonar') {
