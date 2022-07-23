@@ -3,7 +3,7 @@ RUN git clone https://github.com/arvindmahat/spring-petclinic.git && cd spring-p
 FROM maven:3-jdk-11
 COPY --from=builder /spring-petclinic/target/spring-petclinic-2.7.0-SNAPSHOT.jar /spring-petclinic-2.7.0-SNAPSHOT.jar
 EXPOSE 8080
-ENTRYPOINT ["/bin/bash", "java", "-jar", "/spring-petclinic-2.4.2.jar"]
+ENTRYPOINT ["java", "-jar", "/spring-petclinic-2.4.2.jar"]
 CMD ["java", "-jar", "/spring-petclinic-2.4.2.jar"]
 
 
