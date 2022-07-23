@@ -1,7 +1,7 @@
 FROM openjdk:11
-COPY /var/jenkins_home/workspace/spring-petclinic/target/spring-petclinic-2.5.0-SNAPSHOT.jar /spring-petclinic-2.5.0.jar
+COPY /var/jenkins_home/workspace/spc/target/spring-petclinic-2.7.0-SNAPSHOT.jar /spring-petclinic-2.7.0-SNAPSHOT.jar
 EXPOSE 8080
-CMD ["java, "-jar", "spring-petclinic-2.5.0.jar"]
+CMD ["java, "-jar", "spring-petclinic-2.7.0-SNAPSHOT.jar"]
 
 
 
