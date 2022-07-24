@@ -3,7 +3,7 @@ pipeline {
     environment {
         registry = "docker1196/spc"
         registryCredential = 'Dockerhub_id'
-        dockerImage = ''
+        dockerImage = 'spc'
     }
     tools {
         maven 'MVN_version'
@@ -32,6 +32,13 @@ pipeline {
                     docker.withRegistry( '', registryCredential ) {
                         dockerImage.push() 
                     }
+                }
+            }
+        },
+        stage('Deploy App') {
+            steps {
+                script {
+                kubernetesDeploy(configs: "hspc.yaml", kubeconfigId: "K8_key")
                 }
             }
         }
