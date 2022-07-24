@@ -29,7 +29,7 @@ pipeline {
         stage('push our image') {
             steps {
                 script {
-                    docker.withRegistry( '', registryCredential ) {
+                    docker.withRegistry( 'spc', registryCredential ) {
                         dockerImage.push() 
                     }
                 }
