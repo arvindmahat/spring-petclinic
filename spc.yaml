@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spc-rs
+  labels:
+    app: spc
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spc
+  template:
+    metadata:
+      labels:
+        app: spc
+    spec:
+      containers:
+        - name: spc
+          image: docker1196/spc:latest
+          ports:
+          - containerPort: 8080
