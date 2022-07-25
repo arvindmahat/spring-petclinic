@@ -3,7 +3,7 @@ pipeline {
     environment {
         registry = "docker1196/spc"
         registryCredential = 'Dockerhub_id'
-        dockerImage = 'spc'
+        dockerImage = ''
     }
     tools {
         maven 'MVN_version'
@@ -29,7 +29,7 @@ pipeline {
         stage('push our image') {
             steps {
                 script {
-                    docker.withRegistry( 'spc', registryCredential ) {
+                    docker.withRegistry( '', registryCredential ) {
                         dockerImage.push() 
                     }
                 }
