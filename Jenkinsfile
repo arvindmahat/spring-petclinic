@@ -30,7 +30,7 @@ pipeline {
         stage('Deploy App') {
             steps {
                 script {
-                kubernetesDeploy(configs: "spc.yaml", kubeconfigId: "K8_key")
+                kubernetesDeploy(configs: "spc.yaml", kubeconfigId: "k8s_con")
                 }
             }
         }
