@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: spc-rs
+  namespace: development
   labels:
     app: spc
 spec:
